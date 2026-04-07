@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAR Content Engine — Clarksville Association of REALTORS®</title>
+  <meta name="description" content="Free social media content engine for Clarksville Association of REALTORS® members. Generate hashtags, build prompts, and plan your content calendar." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0a0f1a 0%, #111827 40%, #1a1a2e 100%);
+      font-family: 'Outfit', sans-serif;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 600px 400px at 20% 20%, rgba(59,130,246,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse 500px 300px at 80% 80%, rgba(234,88,12,0.04) 0%, transparent 70%);
+    }
+
+    .container { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 20px 16px 60px; }
+
+    /* Header */
+    header { text-align: center; padding: 32px 0 24px; animation: fadeDown 0.6s ease; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .badge {
+      display: inline-block; padding: 6px 16px;
+      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 20px; font-size: 12px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #60a5fa; margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 44px); font-weight: 900; line-height: 1.1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle { font-size: 15px; color: #64748b; max-width: 480px; margin: 0 auto; line-height: 1.5; }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 6px; justify-content: center; margin-bottom: 28px;
+      flex-wrap: wrap; animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    .tab-btn {
+      padding: 10px 20px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      color: #64748b; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.25s ease; font-family: inherit;
+    }
+
+    .tab-btn.active {
+      border-color: rgba(59,130,246,0.4);
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+      color: #93c5fd;
+    }
+
+    .tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.12); color: #94a3b8; }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px; padding: 24px; margin-bottom: 16px;
+    }
+
+    .card-highlight-blue { border-color: rgba(59,130,246,0.15); }
+    .card-highlight-orange { border-color: rgba(234,88,12,0.15); }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: #475569; margin-bottom: 10px;
+    }
+
+    /* Chips */
+    .chip-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    .chip {
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color: #64748b; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+    }
+
+    .chip.selected {
+      border-color: rgba(59,130,246,0.4);
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+      color: #e2e8f0;
+    }
+
+    .chip:hover:not(.selected) { border-color: rgba(255,255,255,0.15); color: #94a3b8; }
+
+    /* Buttons */
+    .btn-primary {
+      width: 100%; padding: 14px 24px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.5px; transition: all 0.2s ease;
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-primary:disabled { background: rgba(255,255,255,0.05); color: #475569; cursor: not-allowed; filter: none; }
+
+    .btn-orange {
+      width: 100%; padding: 14px 24px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.5px; transition: all 0.2s ease;
+    }
+    .btn-orange:hover { filter: brightness(1.1); }
+    .btn-orange:disabled { opacity: 0.6; cursor: wait; filter: none; }
+
+    .btn-copy {
+      padding: 6px 14px; border-radius: 6px;
+      border: 1px solid rgba(59,130,246,0.3);
+      background: rgba(59,130,246,0.1);
+      color: #60a5fa; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: all 0.2s ease;
+    }
+    .btn-copy.copied { background: rgba(34,197,94,0.15); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+
+    /* Output Box */
+    .output-box {
+      padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px;
+      line-height: 2; font-size: 14px; word-break: break-word;
+    }
+
+    .output-box-text {
+      padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px;
+      font-size: 13px; line-height: 1.7; white-space: pre-wrap;
+      word-break: break-word; max-height: 400px; overflow-y: auto;
+    }
+
+    .tip { font-size: 12px; color: #64748b; margin-top: 10px; line-height: 1.5; }
+    .tip strong { color: #94a3b8; }
+
+    /* Textarea & Input */
+    textarea, input[type="text"] {
+      width: 100%; padding: 12px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.3); color: #e2e8f0;
+      font-size: 14px; font-family: inherit; resize: vertical;
+    }
+    textarea:focus, input[type="text"]:focus { outline: none; border-color: rgba(59,130,246,0.3); }
+
+    /* Mode Toggle */
+    .mode-toggle {
+      display: flex; gap: 6px; margin-bottom: 20px;
+      background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px;
+    }
+    .mode-btn {
+      flex: 1; padding: 10px 16px; border-radius: 8px; border: none;
+      background: transparent; color: #64748b;
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .mode-btn.active-prompt { background: rgba(59,130,246,0.15); color: #93c5fd; }
+    .mode-btn.active-ai { background: rgba(234,88,12,0.15); color: #fb923c; }
+
+    /* Calendar */
+    .day-header {
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; padding: 4px 0;
+    }
+    .day-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #60a5fa; }
+    .day-theme { font-size: 16px; font-weight: 700; margin-top: 2px; }
+    .day-meta { font-size: 12px; color: #64748b; margin-top: 4px; }
+    .day-arrow { font-size: 20px; color: #475569; transition: transform 0.2s ease; display: inline-block; }
+    .day-arrow.open { transform: rotate(180deg); }
+
+    .post-card {
+      padding: 14px; background: rgba(0,0,0,0.25); border-radius: 10px;
+      margin-top: 12px; border-left: 3px solid #3b82f6;
+    }
+    .post-card.facebook { border-left-color: #1877F2; }
+    .post-card.instagram { border-left-color: #E4405F; }
+    .post-card.tiktok { border-left-color: #69C9D0; }
+
+    .post-platform { font-size: 12px; font-weight: 700; }
+    .post-platform.facebook { color: #1877F2; }
+    .post-platform.instagram { color: #E4405F; }
+    .post-platform.tiktok { color: #69C9D0; }
+
+    .post-time { font-size: 11px; color: #64748b; }
+    .post-type { font-size: 12px; font-weight: 600; color: #94a3b8; margin: 4px 0; }
+    .post-content { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+    .tab-content { animation: fadeUp 0.4s ease; }
+
+    .hashtag { color: #60a5fa; margin-right: 8px; }
+
+    .duration-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .duration-row .section-label { margin-bottom: 0; }
+
+    .ai-section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .ai-section-header p { font-size: 13px; color: #64748b; margin: 4px 0 0; }
+
+    .error-msg { color: #f87171; font-size: 13px; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; margin-top: 12px; }
+
+    .hidden { display: none; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: #334155; }
+    .footer a { color: #475569; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .container { padding: 12px 10px 40px; }
+      .card { padding: 16px; }
+      .chip { font-size: 12px; padding: 6px 10px; }
+      .tab-btn { padding: 8px 14px; font-size: 13px; }
+      .mode-btn { font-size: 11px; padding: 8px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">Clarksville Association of REALTORS®</div>
+      <h1>Content Engine</h1>
+      <p class="subtitle">Your easy button for social media. Generate hashtags, build prompts, and plan your content — all in one place.</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" onclick="switchTab('hashtags')" id="tab-hashtags"># Hashtag Generator</button>
+      <button class="tab-btn" onclick="switchTab('prompts')" id="tab-prompts">✍️ Prompt Builder</button>
+      <button class="tab-btn" onclick="switchTab('calendar')" id="tab-calendar">📅 Content Calendar</button>
+    </nav>
+
+    <!-- ═══ HASHTAG GENERATOR ═══ -->
+    <div id="panel-hashtags" class="tab-content">
+      <div class="card">
+        <div class="section-label">Select Platform</div>
+        <div class="chip-group" id="hash-platforms"></div>
+
+        <div class="section-label">Select Categories (pick multiple)</div>
+        <div class="chip-group" id="hash-categories"></div>
+
+        <button class="btn-primary" onclick="generateHashtags()">Generate Hashtags</button>
+      </div>
+      <div id="hashtag-results" class="hidden"></div>
+    </div>
+
+    <!-- ═══ PROMPT BUILDER ═══ -->
+    <div id="panel-prompts" class="tab-content hidden">
+      <div class="card">
+        <div class="mode-toggle">
+          <button class="mode-btn active-prompt" id="mode-prompt" onclick="setMode('prompt')">📋 Generate Prompt (Copy/Paste)</button>
+          <button class="mode-btn" id="mode-ai" onclick="setMode('ai')">🤖 AI Write It For Me</button>
+        </div>
+
+        <div class="section-label">Post Type</div>
+        <div class="chip-group" id="prompt-types"></div>
+
+        <div class="section-label">Platform</div>
+        <div class="chip-group" id="prompt-platforms"></div>
+
+        <div class="section-label">Content Format</div>
+        <div class="chip-group" id="prompt-formats"></div>
+
+        <div class="section-label">Tone / Voice</div>
+        <div class="chip-group" id="prompt-tones"></div>
+
+        <div class="section-label">Specific Details (Optional)</div>
+        <textarea id="prompt-details" rows="3" placeholder="Example: 4 bed/3 bath in Sango area, $375k, great backyard, near Rossview schools..." style="margin-bottom:20px"></textarea>
+
+        <button class="btn-primary" id="prompt-generate-btn" onclick="handlePromptGenerate()" disabled>Generate Prompt</button>
+      </div>
+      <div id="prompt-results" class="hidden"></div>
+    </div>
+
+    <!-- ═══ CONTENT CALENDAR ═══ -->
+    <div id="panel-calendar" class="tab-content hidden">
+      <div class="card">
+        <div class="duration-row">
+          <div class="section-label">Calendar Duration</div>
+          <div style="display:flex;gap:8px;margin-left:12px">
+            <button class="chip selected" id="dur-7" onclick="setDuration(7)">📅 7-Day Plan</button>
+            <button class="chip" id="dur-14" onclick="setDuration(14)">📅 14-Day Plan</button>
+          </div>
+        </div>
+      </div>
+      <div id="calendar-days"></div>
+
+      <!-- AI Custom Calendar -->
+      <div class="card card-highlight-orange" style="margin-top:8px">
+        <div class="ai-section-header" onclick="toggleAICalendar()">
+          <div>
+            <div class="section-label">🤖 AI Custom Calendar (Bonus)</div>
+            <p>Want something more personalized? AI will create a custom calendar based on your niche.</p>
+          </div>
+          <span class="day-arrow" id="ai-cal-arrow">▾</span>
+        </div>
+        <div id="ai-cal-body" class="hidden" style="margin-top:16px">
+          <input type="text" id="ai-niche" placeholder="Your niche: e.g. luxury homes, military relocation, first-time buyers..." style="margin-bottom:12px" />
+          <button class="btn-orange" onclick="generateAICalendar()" id="ai-cal-btn">Generate Custom Calendar</button>
+          <div id="ai-cal-result" class="hidden" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Built for the <a href="#">Clarksville Association of REALTORS®</a> Leadership Academy
+    </div>
+  </div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────
+const HASHTAGS = {
+  general: ["#ClarksvilleRealEstate","#ClarksvilleTN","#ClarksvilleHomes","#ClarksvilleRealtor","#FortCampbellHomes","#ClarksvilleLiving","#MontgomeryCountyTN","#ClarksvilleHomesForSale","#TNRealEstate","#TennesseeRealEstate","#ClarksvilleRealtors","#MoveToClarksville","#ClarksvilleLife","#ClarksvilleCommunity"],
+  buying: ["#FirstTimeHomeBuyer","#HomeBuying","#HouseHunting","#DreamHome","#NewHome","#HomeBuyerTips","#RealEstateInvesting","#JustListed","#OpenHouse","#HomeSearch","#BuyersAgent","#MoveInReady","#VALoan","#FHALoan","#MilitaryHomeBuyer"],
+  selling: ["#JustSold","#HomeForSale","#ListingAgent","#SellYourHome","#HomeSelling","#RealEstateMarketing","#SoldInClarksville","#HomeValue","#SellerTips","#CurbAppeal","#StagedToSell","#UnderContract","#PricedToSell","#TopProducer"],
+  military: ["#MilitaryRelocation","#FortCampbell","#MilitaryFamily","#PCSMove","#PCSing","#MilitarySpouse","#VeteranHomeowner","#VAHomeLoan","#MilitaryHousing","#ScreeningEagles","#ArmyLife","#MilFam","#PCSSeason","#MilitaryPCS"],
+  luxury: ["#LuxuryHomes","#LuxuryRealEstate","#LuxuryLiving","#MillionDollarListing","#DreamHome","#CustomHome","#LuxuryLifestyle","#HighEndHomes","#EstateHome","#LuxuryProperty","#FineLiving","#ExclusiveListings"],
+  community: ["#ClarksvilleEvents","#DowntownClarksville","#ClarksvilleEats","#ClarksvilleParks","#ClarksvilleSchools","#GovernsSquare","#RiverDistrict","#ClarksvilleSmallBusiness","#ClarksvilleFamilies","#ClarksvilleGrowth","#ClarksvilleNewConstruction"],
+  trending: ["#RealEstate2026","#HousingMarket","#Realtor","#RealEstateAgent","#HomeOwnership","#PropertyInvestment","#RealEstateLife","#RealtorLife","#HomeSweetHome","#Investment","#RealEstateGoals","#ClosingDay","#NewListing","#HotMarket"],
+  tiktok: ["#RealEstateTikTok","#RealtorTikTok","#HomeTour","#HouseTour","#RealEstateCheck","#POVRealtor","#DayInTheLife","#RealEstateHacks","#RealtorHumor","#MillennialHomebuyer","#GenZHomeBuyer","#AskARealtor","#RealEstateAdvice"]
+};
+
+const PLATFORMS = {
+  facebook: { name:"Facebook", icon:"f", color:"#1877F2", max:10, tip:"Best with 3-5 hashtags in comments, not the post body" },
+  instagram: { name:"Instagram", icon:"📷", color:"#E4405F", max:30, tip:"Use 20-30 hashtags, mix popular + niche. Place in first comment." },
+  tiktok: { name:"TikTok", icon:"♪", color:"#69C9D0", max:8, tip:"Use 3-5 targeted hashtags. Trending sounds matter more than tags." }
+};
+
+const POST_TYPES = [
+  {id:"listing",label:"New Listing",emoji:"🏠"},{id:"sold",label:"Just Sold",emoji:"🎉"},
+  {id:"openhouse",label:"Open House",emoji:"🚪"},{id:"tip",label:"Buyer/Seller Tip",emoji:"💡"},
+  {id:"market",label:"Market Update",emoji:"📊"},{id:"community",label:"Community Spotlight",emoji:"🌆"},
+  {id:"military",label:"Military/PCS",emoji:"🎖️"},{id:"personal",label:"Personal Brand",emoji:"✨"},
+  {id:"testimonial",label:"Client Testimonial",emoji:"⭐"},{id:"behind",label:"Behind the Scenes",emoji:"🎬"}
+];
+
+const TONES = [
+  {id:"professional",label:"Professional"},{id:"friendly",label:"Friendly & Warm"},
+  {id:"authoritative",label:"Market Expert"},{id:"casual",label:"Casual / Relatable"},
+  {id:"luxury",label:"Luxury / Premium"},{id:"military",label:"Military-Friendly"},
+  {id:"humorous",label:"Fun / Humorous"}
+];
+
+const FORMATS = {
+  facebook: ["Text Post","Photo + Caption","Video Post","Poll / Question","Event"],
+  instagram: ["Feed Post","Carousel (3-5 slides)","Reel Script","Story Series","Bio Update"],
+  tiktok: ["Video Script (15-30s)","Video Script (30-60s)","Trending Sound Idea","Duet / Stitch Idea"]
+};
+
+const CALENDAR_7 = [
+  {day:"Monday",theme:"Market Monday",posts:[
+    {platform:"Facebook",time:"9:00 AM",type:"Market Update",content:"Share a Clarksville market stat or insight. Example: 'Clarksville median home prices this month — here's what it means for buyers and sellers.'",format:"Text + Graphic"},
+    {platform:"Instagram",time:"12:00 PM",type:"Carousel",content:"3-5 slide carousel breaking down a local market trend. Use bold numbers and clean graphics.",format:"Carousel (3-5 slides)"}
+  ]},
+  {day:"Tuesday",theme:"Tip Tuesday",posts:[
+    {platform:"TikTok",time:"11:00 AM",type:"Short Video",content:"Quick 30-60 sec tip video. Example: '3 things Fort Campbell families need to know before buying in Clarksville'",format:"Video (30-60 sec)"},
+    {platform:"Facebook",time:"2:00 PM",type:"Engagement Post",content:"Ask a question to drive comments. Example: 'What's the #1 thing on your home wishlist?' or 'Clarksville neighborhood poll — Sango vs. St. Bethlehem?'",format:"Text + Poll/Question"}
+  ]},
+  {day:"Wednesday",theme:"Spotlight Wednesday",posts:[
+    {platform:"Instagram",time:"10:00 AM",type:"Reel",content:"Feature a Clarksville business, restaurant, or hidden gem. Tag them for cross-promotion.",format:"Reel (15-30 sec)"},
+    {platform:"Facebook",time:"3:00 PM",type:"Community Post",content:"Highlight a local event, new restaurant, or community story. Position yourself as the local expert.",format:"Photo + Story"}
+  ]},
+  {day:"Thursday",theme:"Throwback / Testimonial Thursday",posts:[
+    {platform:"Instagram",time:"11:00 AM",type:"Story + Feed",content:"Client testimonial graphic or before/after transformation. Tag the client (with permission).",format:"Graphic + Story"},
+    {platform:"TikTok",time:"5:00 PM",type:"Trending Audio",content:"Use a trending sound with a real estate twist. Example: 'POV: You just got the keys to your Clarksville dream home'",format:"Video (15-30 sec)"}
+  ]},
+  {day:"Friday",theme:"Feature Friday",posts:[
+    {platform:"Facebook",time:"10:00 AM",type:"Listing Feature",content:"Showcase your best active listing with professional photos. Include price, key features, and a call to action.",format:"Photo Gallery + CTA"},
+    {platform:"Instagram",time:"1:00 PM",type:"Reel / Carousel",content:"Home tour reel or 'Top 5 features of this home' carousel. Use trending audio for reels.",format:"Reel or Carousel"},
+    {platform:"TikTok",time:"6:00 PM",type:"Home Tour",content:"Walkthrough video of a listing. Keep it casual and authentic — TikTok rewards real over polished.",format:"Video (30-90 sec)"}
+  ]},
+  {day:"Saturday",theme:"Lifestyle Saturday",posts:[
+    {platform:"Instagram",time:"10:00 AM",type:"Story Series",content:"Behind-the-scenes of your day: showings, open houses, prepping for clients. Use polls and questions in stories.",format:"Stories (3-5 slides)"},
+    {platform:"Facebook",time:"12:00 PM",type:"Lifestyle Post",content:"Share something personal — favorite Clarksville coffee shop, weekend plans, family moment. Build relatability.",format:"Photo + Personal Story"}
+  ]},
+  {day:"Sunday",theme:"Strategy Sunday",posts:[
+    {platform:"Instagram",time:"7:00 PM",type:"Prep Post",content:"Plan-your-week content. Example: 'New listings hitting the market this week in Clarksville — DM me for early access.'",format:"Graphic or Carousel"},
+    {platform:"Facebook",time:"8:00 PM",type:"Engagement",content:"Inspirational or motivational post about homeownership. Example: 'Every home has a story. Ready to write yours?'",format:"Text + Image"}
+  ]}
+];
+
+const CALENDAR_14 = [...CALENDAR_7,
+  {day:"Monday (Wk 2)",theme:"Myth Buster Monday",posts:[
+    {platform:"TikTok",time:"10:00 AM",type:"Myth vs Fact",content:"Bust a common real estate myth. Example: 'You do NOT need 20% down to buy a home in Clarksville — here's why'",format:"Video (30-60 sec)"},
+    {platform:"Facebook",time:"1:00 PM",type:"Educational",content:"Longer-form educational post debunking a myth. Include a clear CTA: 'Have questions? Drop them below.'",format:"Text + Graphic"}
+  ]},
+  {day:"Tuesday (Wk 2)",theme:"Transformation Tuesday",posts:[
+    {platform:"Instagram",time:"11:00 AM",type:"Before & After",content:"Before/after of a renovation, staging, or curb appeal project. Great for engagement.",format:"Carousel (Before/After)"},
+    {platform:"Facebook",time:"3:00 PM",type:"Success Story",content:"Tell a client success story (with permission). Focus on the challenge they faced and how you helped them win.",format:"Text + Photo"}
+  ]},
+  {day:"Wednesday (Wk 2)",theme:"Neighborhood Wednesday",posts:[
+    {platform:"Instagram",time:"10:00 AM",type:"Reel",content:"Drive-through tour of a Clarksville neighborhood. Show the vibe, amenities, and why people love living there.",format:"Reel (30-60 sec)"},
+    {platform:"TikTok",time:"4:00 PM",type:"Area Guide",content:"Quick neighborhood breakdown: 'Living in Sango, Clarksville — here's what to expect'",format:"Video (30-60 sec)"}
+  ]},
+  {day:"Thursday (Wk 2)",theme:"Numbers Thursday",posts:[
+    {platform:"Facebook",time:"9:00 AM",type:"Stats Post",content:"Share eye-catching numbers: homes sold, average days on market, price changes in Clarksville.",format:"Infographic"},
+    {platform:"Instagram",time:"12:00 PM",type:"Carousel",content:"Data-driven carousel: '5 Numbers Every Clarksville Home Buyer Should Know Right Now'",format:"Carousel (5 slides)"}
+  ]},
+  {day:"Friday (Wk 2)",theme:"Fun Friday",posts:[
+    {platform:"TikTok",time:"12:00 PM",type:"Humor/Relatable",content:"Funny or relatable real estate content. Example: 'Things clients say during showings' with trending audio.",format:"Video (15-30 sec)"},
+    {platform:"Instagram",time:"3:00 PM",type:"This or That",content:"This-or-that story series: 'Farmhouse or Modern? Pool or Big Yard? Sango or Rossview?' Get followers tapping.",format:"Stories (5-8 slides)"},
+    {platform:"Facebook",time:"5:00 PM",type:"Weekend Listing",content:"Weekend open house promo or featured listing with all the details and strong imagery.",format:"Photo Gallery + Event"}
+  ]},
+  {day:"Saturday (Wk 2)",theme:"Social Proof Saturday",posts:[
+    {platform:"Instagram",time:"10:00 AM",type:"Testimonial Reel",content:"Video testimonial from a happy client, or a graphic quote over closing day photos.",format:"Reel or Graphic"},
+    {platform:"Facebook",time:"1:00 PM",type:"Review Highlight",content:"Share a Google or Zillow review screenshot with a personal thank-you message.",format:"Screenshot + Thank You"}
+  ]},
+  {day:"Sunday (Wk 2)",theme:"Vision Board Sunday",posts:[
+    {platform:"Instagram",time:"6:00 PM",type:"Inspiration",content:"Dream home content: luxury listings, aspirational lifestyle, or homeownership motivation.",format:"Carousel or Single Image"},
+    {platform:"Facebook",time:"7:00 PM",type:"Weekly Preview",content:"Preview the upcoming week: new listings, events, or valuable content coming. Build anticipation.",format:"Text + Graphic"}
+  ]}
+];
+
+// ─── STATE ───────────────────────────────────────────────────────
+let state = {
+  tab: 'hashtags',
+  hashPlatform: 'instagram',
+  hashCategories: ['general'],
+  promptType: '',
+  promptPlatform: 'facebook',
+  promptFormat: '',
+  promptTone: 'professional',
+  promptMode: 'prompt',
+  calDuration: 7,
+  calExpanded: null,
+  aiCalOpen: false
+};
+
+// ─── AI API HELPER ───────────────────────────────────────────────
+// This function routes through the secure Netlify serverless function.
+// The API key is NEVER exposed to the browser.
+async function callAI(messages) {
+  const response = await fetch("/.netlify/functions/claude-proxy", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      max_tokens: 1000,
+      messages: messages
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error || "AI service unavailable. Please try again later.");
+  }
+
+  const data = await response.json();
+  return data.content?.map(c => c.text || "").join("\n") || "No response generated. Please try again.";
+}
+
+// ─── TAB SWITCHING ───────────────────────────────────────────────
+function switchTab(tab) {
+  state.tab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  ['hashtags','prompts','calendar'].forEach(p => {
+    document.getElementById('panel-' + p).classList.toggle('hidden', p !== tab);
+  });
+}
+
+// ─── CHIP RENDERING ─────────────────────────────────────────────
+function renderChips(containerId, items, selectedFn, clickFn) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  items.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (selectedFn(item) ? ' selected' : '');
+    btn.textContent = (item.emoji ? item.emoji + ' ' : '') + (item.icon ? item.icon + ' ' : '') + (item.label || item.name || item);
+    btn.onclick = () => clickFn(item);
+    el.appendChild(btn);
+  });
+}
+
+// ─── HASHTAG GENERATOR ──────────────────────────────────────────
+function initHashtags() {
+  const platItems = Object.entries(PLATFORMS).map(([k,v]) => ({id:k, label:v.icon+' '+v.name}));
+  renderChips('hash-platforms', platItems,
+    i => state.hashPlatform === i.id,
+    i => { state.hashPlatform = i.id; initHashtags(); }
+  );
+
+  const cats = [
+    {id:"general",label:"Clarksville General",emoji:"📍"},{id:"buying",label:"Buying",emoji:"🔑"},
+    {id:"selling",label:"Selling",emoji:"💰"},{id:"military",label:"Military / PCS",emoji:"🎖️"},
+    {id:"luxury",label:"Luxury",emoji:"💎"},{id:"community",label:"Community",emoji:"🌆"},
+    {id:"trending",label:"Trending / General",emoji:"🔥"},{id:"tiktok",label:"TikTok Specific",emoji:"♪"}
+  ];
+  renderChips('hash-categories', cats,
+    i => state.hashCategories.includes(i.id),
+    i => {
+      if (state.hashCategories.includes(i.id)) {
+        state.hashCategories = state.hashCategories.filter(c => c !== i.id);
+      } else {
+        state.hashCategories.push(i.id);
+      }
+      initHashtags();
+    }
+  );
+}
+
+function generateHashtags() {
+  const plat = PLATFORMS[state.hashPlatform];
+  let pool = [];
+  state.hashCategories.forEach(c => { pool = pool.concat(HASHTAGS[c] || []); });
+  pool = [...new Set(pool)];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const tags = pool.slice(0, plat.max);
+
+  const container = document.getElementById('hashtag-results');
+  container.classList.remove('hidden');
+  container.innerHTML = `
+    <div class="card card-highlight-blue">
+      <div class="flex-between" style="margin-bottom:12px">
+        <div class="section-label">Your Hashtags (${tags.length})</div>
+        <button class="btn-copy" id="hash-copy-btn" onclick="copyHashtags()">Copy All</button>
+      </div>
+      <div class="output-box" id="hashtag-output">${tags.map(t => '<span class="hashtag">'+t+'</span>').join('')}</div>
+      <p class="tip">💡 <strong>Tip:</strong> ${plat.tip}</p>
+    </div>
+  `;
+  // Store tags for copy
+  window._lastHashtags = tags.join(' ');
+}
+
+function copyHashtags() {
+  navigator.clipboard.writeText(window._lastHashtags || '');
+  const btn = document.getElementById('hash-copy-btn');
+  btn.classList.add('copied');
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = 'Copy All'; }, 2000);
+}
+
+// ─── PROMPT BUILDER ─────────────────────────────────────────────
+function initPrompts() {
+  renderChips('prompt-types', POST_TYPES,
+    i => state.promptType === i.id,
+    i => { state.promptType = i.id; initPrompts(); updatePromptBtn(); }
+  );
+
+  const platItems = Object.entries(PLATFORMS).map(([k,v]) => ({id:k, label:v.icon+' '+v.name}));
+  renderChips('prompt-platforms', platItems,
+    i => state.promptPlatform === i.id,
+    i => { state.promptPlatform = i.id; state.promptFormat = ''; initPrompts(); }
+  );
+
+  const fmts = (FORMATS[state.promptPlatform] || []).map(f => ({id:f, label:f}));
+  renderChips('prompt-formats', fmts,
+    i => state.promptFormat === i.id,
+    i => { state.promptFormat = i.id; initPrompts(); }
+  );
+
+  renderChips('prompt-tones', TONES,
+    i => state.promptTone === i.id,
+    i => { state.promptTone = i.id; initPrompts(); }
+  );
+}
+
+function setMode(m) {
+  state.promptMode = m;
+  document.getElementById('mode-prompt').className = 'mode-btn' + (m === 'prompt' ? ' active-prompt' : '');
+  document.getElementById('mode-ai').className = 'mode-btn' + (m === 'ai' ? ' active-ai' : '');
+  updatePromptBtn();
+}
+
+function updatePromptBtn() {
+  const btn = document.getElementById('prompt-generate-btn');
+  btn.disabled = !state.promptType;
+  if (state.promptMode === 'ai') {
+    btn.className = 'btn-orange';
+    btn.textContent = '✨ AI Write It For Me';
+  } else {
+    btn.className = 'btn-primary';
+    btn.textContent = 'Generate Prompt';
+  }
+  if (!state.promptType) btn.style.opacity = '0.5';
+  else btn.style.opacity = '1';
+}
+
+function buildPromptText() {
+  const typeLabel = POST_TYPES.find(p => p.id === state.promptType)?.label || "social media post";
+  const platformName = PLATFORMS[state.promptPlatform]?.name || "social media";
+  const toneLabel = TONES.find(t => t.id === state.promptTone)?.label || "professional";
+  const details = document.getElementById('prompt-details').value;
+  const plat = state.promptPlatform;
+  const fmt = state.promptFormat;
+
+  return `You are a social media content expert specializing in real estate marketing for the Clarksville, Tennessee market (Montgomery County). Write a ${typeLabel.toLowerCase()} for ${platformName}${fmt ? ' in ' + fmt + ' format' : ''}.
+
+TONE: ${toneLabel}
+MARKET: Clarksville, TN (near Fort Campbell Army Base)
+AUDIENCE: Home buyers, sellers, military families, and investors in the Clarksville area
+
+${details ? 'SPECIFIC DETAILS TO INCLUDE:\n' + details + '\n' : ''}REQUIREMENTS:
+- Make it engaging and authentic — not salesy or generic
+- Include a clear call to action
+- Reference Clarksville or local landmarks/neighborhoods when natural
+- Optimize for ${platformName} best practices (${plat === 'instagram' ? 'use line breaks, emojis strategically' : plat === 'tiktok' ? 'hook in first 3 seconds, keep it punchy' : 'conversational, shareable format'})
+- Keep it ${plat === 'tiktok' ? 'under 150 words for script' : plat === 'instagram' ? 'under 200 words' : 'under 250 words'}
+${plat === 'tiktok' ? '- Include suggested trending sounds or audio ideas\n- Write it as a script with visual directions' : ''}
+${state.promptType === 'military' ? '- Be respectful and knowledgeable about military life, PCS moves, and VA benefits' : ''}
+
+Write the complete, ready-to-post content now.`;
+}
+
+async function handlePromptGenerate() {
+  const prompt = buildPromptText();
+
+  if (state.promptMode === 'prompt') {
+    showPromptResult(prompt, 'Your Prompt — Copy & Paste into ChatGPT or Claude');
+    return;
+  }
+
+  // AI mode
+  const btn = document.getElementById('prompt-generate-btn');
+  const origText = btn.textContent;
+  btn.textContent = '✨ Writing your content...';
+  btn.disabled = true;
+
+  try {
+    const text = await callAI([{ role: 'user', content: prompt }]);
+    showPromptResult(text, 'Your AI-Generated Content');
+  } catch (err) {
+    showPromptResult('', '', err.message);
+  }
+
+  btn.disabled = false;
+  updatePromptBtn();
+}
+
+function showPromptResult(text, label, error) {
+  const container = document.getElementById('prompt-results');
+  container.classList.remove('hidden');
+
+  if (error) {
+    container.innerHTML = `<div class="card"><div class="error-msg">⚠️ ${error}<br><br>You can still use the <strong>Generate Prompt</strong> mode to create a prompt and paste it into ChatGPT or Claude for free.</div></div>`;
+    return;
+  }
+
+  const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  container.innerHTML = `
+    <div class="card ${state.promptMode === 'ai' ? 'card-highlight-orange' : 'card-highlight-blue'}">
+      <div class="flex-between" style="margin-bottom:12px">
+        <div class="section-label">${label}</div>
+        <button class="btn-copy" id="prompt-copy-btn" onclick="copyPromptResult()">Copy</button>
+      </div>
+      <div class="output-box-text" id="prompt-output">${escaped}</div>
+    </div>
+  `;
+  window._lastPromptResult = text;
+}
+
+function copyPromptResult() {
+  navigator.clipboard.writeText(window._lastPromptResult || '');
+  const btn = document.getElementById('prompt-copy-btn');
+  btn.classList.add('copied');
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = 'Copy'; }, 2000);
+}
+
+// ─── CONTENT CALENDAR ───────────────────────────────────────────
+function setDuration(d) {
+  state.calDuration = d;
+  state.calExpanded = null;
+  document.getElementById('dur-7').classList.toggle('selected', d === 7);
+  document.getElementById('dur-14').classList.toggle('selected', d === 14);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const data = state.calDuration === 7 ? CALENDAR_7 : CALENDAR_14;
+  const container = document.getElementById('calendar-days');
+  container.innerHTML = data.map((day, idx) => `
+    <div class="card" style="cursor:pointer;${state.calExpanded === idx ? 'border-color:rgba(59,130,246,0.2)' : ''}">
+      <div class="day-header" onclick="toggleDay(${idx})">
+        <div>
+          <div class="day-label">${day.day}</div>
+          <div class="day-theme">${day.theme}</div>
+          <div class="day-meta">${day.posts.length} post${day.posts.length > 1 ? 's' : ''} — ${[...new Set(day.posts.map(p => p.platform))].join(', ')}</div>
+        </div>
+        <span class="day-arrow ${state.calExpanded === idx ? 'open' : ''}">▾</span>
+      </div>
+      ${state.calExpanded === idx ? '<div>' + day.posts.map(p => `
+        <div class="post-card ${p.platform.toLowerCase()}">
+          <div class="flex-between" style="margin-bottom:6px">
+            <span class="post-platform ${p.platform.toLowerCase()}">${p.platform}</span>
+            <span class="post-time">🕐 ${p.time} • ${p.format}</span>
+          </div>
+          <div class="post-type">${p.type}</div>
+          <div class="post-content">${p.content}</div>
+        </div>
+      `).join('') + '</div>' : ''}
+    </div>
+  `).join('');
+}
+
+function toggleDay(idx) {
+  state.calExpanded = state.calExpanded === idx ? null : idx;
+  renderCalendar();
+}
+
+function toggleAICalendar() {
+  state.aiCalOpen = !state.aiCalOpen;
+  document.getElementById('ai-cal-body').classList.toggle('hidden', !state.aiCalOpen);
+  document.getElementById('ai-cal-arrow').classList.toggle('open', state.aiCalOpen);
+}
+
+async function generateAICalendar() {
+  const niche = document.getElementById('ai-niche').value;
+  const btn = document.getElementById('ai-cal-btn');
+  btn.textContent = '✨ Generating Custom Calendar...';
+  btn.disabled = true;
+
+  const result = document.getElementById('ai-cal-result');
+
+  try {
+    const text = await callAI([{
+      role: 'user',
+      content: `Create a custom ${state.calDuration}-day social media content calendar for a Clarksville, Tennessee REALTOR. Platforms: Facebook, Instagram, TikTok.${niche ? ' Their specialty/niche: ' + niche + '.' : ''}\n\nFor each day provide:\n- Day name and theme\n- Platform, posting time, content type\n- Specific post idea (not generic — reference Clarksville neighborhoods, Fort Campbell, local landmarks)\n\nKeep it practical and actionable. Format clearly with days separated.`
+    }]);
+
+    result.classList.remove('hidden');
+    result.innerHTML = `<div class="output-box-text">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+  } catch (err) {
+    result.classList.remove('hidden');
+    result.innerHTML = `<div class="error-msg">⚠️ ${err.message}<br><br>Try using the template calendar above — it's ready to go with no AI needed.</div>`;
+  }
+
+  btn.textContent = `Generate Custom ${state.calDuration}-Day Calendar`;
+  btn.disabled = false;
+}
+
+// ─── INIT ────────────────────────────────────────────────────────
+initHashtags();
+initPrompts();
+updatePromptBtn();
+renderCalendar();
+</script>
+</body>
+</html>
