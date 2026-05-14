@@ -226,6 +226,49 @@
 
     .hidden { display: none; }
 
+    /* Video Templates */
+    .template-intro {
+      font-size: 13px; color: #64748b;
+      margin-bottom: 18px; line-height: 1.5;
+    }
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .template-card {
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .template-card:hover {
+      border-color: rgba(37,99,235,0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+    }
+    .template-thumb {
+      height: 120px; border-radius: 8px;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px; color: #94a3b8;
+    }
+    .template-name {
+      font-size: 14px; font-weight: 600; color: #1e293b;
+      line-height: 1.35; min-height: 38px;
+    }
+    .template-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 6px; padding: 10px 14px; border-radius: 8px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff; font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s ease;
+      border: none; cursor: pointer;
+    }
+    .template-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
     /* Footer */
     .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: #94a3b8; }
     .footer a { color: #64748b; text-decoration: none; }
@@ -457,6 +500,7 @@
       <button class="tab-btn active" onclick="switchTab('hashtags')" id="tab-hashtags"># Hashtag Generator</button>
       <button class="tab-btn" onclick="switchTab('prompts')" id="tab-prompts">✍️ Prompt Builder</button>
       <button class="tab-btn" onclick="switchTab('calendar')" id="tab-calendar">📅 Content Calendar</button>
+      <button class="tab-btn" onclick="switchTab('templates')" id="tab-templates">🎬 Video Templates</button>
     </nav>
 
     <!-- ═══ ONE-CLICK POST ═══ -->
@@ -609,6 +653,41 @@
           <input type="text" id="ai-niche" placeholder="Your niche: e.g. luxury homes, military relocation, first-time buyers..." style="margin-bottom:12px" />
           <button class="btn-orange" onclick="generateAICalendar()" id="ai-cal-btn">Generate Custom Calendar</button>
           <div id="ai-cal-result" class="hidden" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIDEO TEMPLATES ═══ -->
+    <div id="panel-templates" class="tab-content hidden">
+      <div class="card">
+        <div class="section-label">🎬 Canva Video Templates</div>
+        <p class="template-intro">Pre-built Canva video templates for Reels, Stories, and TikTok. Click any template to open it in Canva — you'll get your own editable copy to customize with your branding, photos, and message.</p>
+        <div class="template-grid">
+          <div class="template-card">
+            <div class="template-thumb">▶</div>
+            <div class="template-name">Brown Minimal — Transformation Reel</div>
+            <a class="template-btn" href="https://canva.link/01xwm6yah7pnmsy" target="_blank" rel="noopener noreferrer">Open in Canva →</a>
+          </div>
+          <div class="template-card">
+            <div class="template-thumb">▶</div>
+            <div class="template-name">Brown Simple — Intro Reel</div>
+            <a class="template-btn" href="https://canva.link/dpgv2g0niy6dx7u" target="_blank" rel="noopener noreferrer">Open in Canva →</a>
+          </div>
+          <div class="template-card">
+            <div class="template-thumb">▶</div>
+            <div class="template-name">Brown Neutral — Lifestyle Reel</div>
+            <a class="template-btn" href="https://canva.link/ksk1k6hogai03do" target="_blank" rel="noopener noreferrer">Open in Canva →</a>
+          </div>
+          <div class="template-card">
+            <div class="template-thumb">▶</div>
+            <div class="template-name">Neutral — Laptop Lifestyle</div>
+            <a class="template-btn" href="https://canva.link/8feplppmlnjen8n" target="_blank" rel="noopener noreferrer">Open in Canva →</a>
+          </div>
+          <div class="template-card">
+            <div class="template-thumb">▶</div>
+            <div class="template-name">Monochrome — POV / Podcast Style</div>
+            <a class="template-btn" href="https://canva.link/qrjjrcaot0zrd4k" target="_blank" rel="noopener noreferrer">Open in Canva →</a>
+          </div>
         </div>
       </div>
     </div>
@@ -1362,7 +1441,7 @@ function switchTab(tab) {
   state.tab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-  ['oneclick','hashtags','prompts','calendar'].forEach(p => {
+  ['oneclick','hashtags','prompts','calendar','templates'].forEach(p => {
     document.getElementById('panel-' + p).classList.toggle('hidden', p !== tab);
   });
   trackEvent('Tab_Switch', { tab });
