@@ -378,129 +378,6 @@
       border-radius: 10px;
     }
 
-    /* Refresh Modal (What's New announcement) */
-    @keyframes refreshFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes refreshScaleIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
-    .refresh-overlay {
-      position: fixed; inset: 0; z-index: 10000;
-      background: rgba(15,23,42,0.55);
-      display: flex; align-items: center; justify-content: center;
-      padding: 20px;
-      animation: refreshFadeIn 0.25s ease;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-    }
-
-    .refresh-modal {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 540px; width: 100%;
-      position: relative;
-      box-shadow: 0 30px 60px rgba(15,23,42,0.30), 0 0 0 1px rgba(15,23,42,0.05);
-      animation: refreshScaleIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
-    }
-
-    .refresh-close {
-      position: absolute; top: 12px; right: 14px;
-      background: transparent; border: none;
-      font-size: 26px; color: #94a3b8;
-      cursor: pointer; line-height: 1;
-      padding: 4px 10px; border-radius: 6px;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-    .refresh-close:hover { background: #f1f5f9; color: #1e293b; }
-
-    .refresh-badge {
-      display: inline-block; padding: 5px 14px;
-      background: linear-gradient(135deg, rgba(37,99,235,0.10), rgba(234,88,12,0.06));
-      border: 1px solid rgba(37,99,235,0.22);
-      border-radius: 20px;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 1.4px; text-transform: uppercase;
-      color: #2563eb;
-      margin-bottom: 16px;
-    }
-
-    .refresh-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(24px, 4vw, 32px); font-weight: 900;
-      color: #0f172a; line-height: 1.15;
-      margin-bottom: 10px; letter-spacing: -0.01em;
-    }
-
-    .refresh-lead {
-      font-size: 15px; color: #64748b; line-height: 1.55;
-      margin-bottom: 24px;
-    }
-
-    .refresh-features {
-      display: flex; flex-direction: column; gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .refresh-feature {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 14px 16px;
-      background: #f8fafc;
-      border-radius: 10px;
-      border-left: 3px solid #2563eb;
-    }
-    .refresh-feature:nth-child(2) { border-left-color: #ea580c; }
-    .refresh-feature:nth-child(3) { border-left-color: #9333ea; }
-
-    .refresh-feature-icon {
-      font-size: 22px; flex-shrink: 0; line-height: 1.2;
-    }
-
-    .refresh-feature-body { flex: 1; }
-    .refresh-feature-title {
-      font-weight: 700; font-size: 14px; color: #0f172a;
-      margin-bottom: 4px;
-    }
-    .refresh-feature-text {
-      font-size: 13px; color: #475569; line-height: 1.55;
-    }
-    .refresh-feature-text strong { color: #1e293b; }
-
-    .refresh-actions {
-      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-    }
-    .refresh-cta-primary { flex: 1; min-width: 200px; }
-    .refresh-cta-secondary {
-      padding: 14px 22px;
-      border-radius: 10px;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: #ffffff;
-      color: #475569;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; font-family: inherit;
-      transition: all 0.2s ease;
-    }
-    .refresh-cta-secondary:hover {
-      border-color: rgba(15,23,42,0.20);
-      background: #f8fafc;
-      color: #1e293b;
-    }
-
-    .footer-link {
-      color: #2563eb !important;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .footer-link:hover { color: #1d4ed8 !important; }
-
-    @media (max-width: 500px) {
-      .refresh-modal { padding: 24px 20px; }
-      .refresh-actions { flex-direction: column; }
-      .refresh-cta-secondary { width: 100%; }
-      .refresh-cta-primary { width: 100%; }
-    }
-
     @media (max-width: 600px) {
       .container { padding: 12px 10px 40px; }
       .card { padding: 16px; }
@@ -677,46 +554,6 @@
 
     <div class="footer">
       Built for the <a href="#">Clarksville Association of REALTORS®</a> Leadership Academy
-      &nbsp;·&nbsp; <a class="footer-link" onclick="showRefreshModal();return false;">What's new ✨</a>
-    </div>
-  </div>
-
-  <!-- ═══ REFRESH ANNOUNCEMENT MODAL ═══ -->
-  <div id="refresh-modal-overlay" class="refresh-overlay hidden" onclick="onRefreshOverlayClick(event)">
-    <div class="refresh-modal" role="dialog" aria-labelledby="refresh-modal-title" aria-modal="true">
-      <button class="refresh-close" onclick="hideRefreshModal()" aria-label="Close">×</button>
-      <div class="refresh-badge">✨ The Refresh · v2026.5</div>
-      <h2 id="refresh-modal-title" class="refresh-title">A cleaner, sharper Content Engine.</h2>
-      <p class="refresh-lead">Same one-click power. New light look. And the biggest content drop we've shipped yet — built specifically for Clarksville agents.</p>
-
-      <div class="refresh-features">
-        <div class="refresh-feature">
-          <div class="refresh-feature-icon">🎨</div>
-          <div class="refresh-feature-body">
-            <div class="refresh-feature-title">A lighter look</div>
-            <div class="refresh-feature-text">Refined cream-and-white palette with brand blue and orange accents. Easier to read on a phone, a desktop, or a projector.</div>
-          </div>
-        </div>
-        <div class="refresh-feature">
-          <div class="refresh-feature-icon">🚀</div>
-          <div class="refresh-feature-body">
-            <div class="refresh-feature-title">40-Day Content Plan</div>
-            <div class="refresh-feature-text">Forty days of Clarksville-specific post ideas — each one mapped to a platform, format, and best posting time. Find it under <strong>Content Calendar → 🚀 40-Day Plan</strong>.</div>
-          </div>
-        </div>
-        <div class="refresh-feature">
-          <div class="refresh-feature-icon">📚</div>
-          <div class="refresh-feature-body">
-            <div class="refresh-feature-title">The Playbook</div>
-            <div class="refresh-feature-text">Best-performing content types, six engagement hooks that stop the scroll, and a fallback for the days you've got nothing to post. Appears alongside the 40-Day Plan.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="refresh-actions">
-        <button class="btn-primary refresh-cta-primary" onclick="goToFortyDayPlan()">🚀 Show Me the 40-Day Plan</button>
-        <button class="refresh-cta-secondary" onclick="hideRefreshModal()">Got it</button>
-      </div>
     </div>
   </div>
 
@@ -1279,56 +1116,6 @@ function copyOneClick(section) {
   trackEvent('Copy_Clicked', { section: 'oneclick_' + section });
 }
 
-// ─── REFRESH MODAL (What's New announcement) ────────────────────
-// Bump REFRESH_VERSION to show the modal again to returning users after a future release.
-const REFRESH_VERSION = 'v1';
-const REFRESH_KEY = 'car_ce_refresh_' + REFRESH_VERSION + '_seen';
-
-function showRefreshModal() {
-  const overlay = document.getElementById('refresh-modal-overlay');
-  overlay.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-  trackEvent('RefreshModal_Shown');
-}
-
-function hideRefreshModal() {
-  const overlay = document.getElementById('refresh-modal-overlay');
-  overlay.classList.add('hidden');
-  document.body.style.overflow = '';
-  localStorage.setItem(REFRESH_KEY, 'true');
-  trackEvent('RefreshModal_Dismissed');
-}
-
-function onRefreshOverlayClick(e) {
-  // Close when clicking the dim backdrop (not the modal card itself)
-  if (e.target.id === 'refresh-modal-overlay') hideRefreshModal();
-}
-
-function goToFortyDayPlan() {
-  hideRefreshModal();
-  switchTab('calendar');
-  setDuration(40);
-  setTimeout(() => {
-    const panel = document.getElementById('panel-calendar');
-    if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 120);
-  trackEvent('RefreshModal_CTA_Clicked');
-}
-
-function initRefreshModal() {
-  // Close on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const overlay = document.getElementById('refresh-modal-overlay');
-      if (overlay && !overlay.classList.contains('hidden')) hideRefreshModal();
-    }
-  });
-  // Show on first visit (per version)
-  if (!localStorage.getItem(REFRESH_KEY)) {
-    setTimeout(showRefreshModal, 450);
-  }
-}
-
 // ─── ONBOARDING TOUR ────────────────────────────────────────────
 let tourStep = 0;
 
@@ -1741,7 +1528,6 @@ initPrompts();
 updatePromptBtn();
 // setDuration handles initial calendar render + duration note + playbook visibility
 setDuration(state.calDuration);
-initRefreshModal();
 initTour();
 </script>
 </body>
