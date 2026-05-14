@@ -13,16 +13,16 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(145deg, #0a0f1a 0%, #111827 40%, #1a1a2e 100%);
+      background: linear-gradient(145deg, #fbfaf6 0%, #f5f3ed 40%, #f0ede4 100%);
       font-family: 'Outfit', sans-serif;
-      color: #e2e8f0;
+      color: #1e293b;
       overflow-x: hidden;
     }
 
     body::before {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background: radial-gradient(ellipse 600px 400px at 20% 20%, rgba(59,130,246,0.06) 0%, transparent 70%),
+      background: radial-gradient(ellipse 600px 400px at 20% 20%, rgba(37,99,235,0.05) 0%, transparent 70%),
                   radial-gradient(ellipse 500px 300px at 80% 80%, rgba(234,88,12,0.04) 0%, transparent 70%);
     }
 
@@ -35,16 +35,16 @@
 
     .badge {
       display: inline-block; padding: 6px 16px;
-      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2);
+      background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.22);
       border-radius: 20px; font-size: 12px; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase; color: #60a5fa; margin-bottom: 16px;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #2563eb; margin-bottom: 16px;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(28px, 5vw, 44px); font-weight: 900; line-height: 1.1;
       margin-bottom: 8px;
-      background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #475569 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -58,28 +58,29 @@
 
     .tab-btn {
       padding: 10px 20px; border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(15,23,42,0.08);
+      background: #ffffff;
       color: #64748b; font-size: 14px; font-weight: 600;
       cursor: pointer; transition: all 0.25s ease; font-family: inherit;
     }
 
     .tab-btn.active {
-      border-color: rgba(59,130,246,0.4);
-      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
-      color: #93c5fd;
+      border-color: rgba(37,99,235,0.4);
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(37,99,235,0.04));
+      color: #2563eb;
     }
 
-    .tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.12); color: #94a3b8; }
+    .tab-btn:hover:not(.active) { border-color: rgba(15,23,42,0.18); color: #334155; background: #fafafa; }
 
     /* Cards */
     .card {
-      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      background: #ffffff; border: 1px solid rgba(15,23,42,0.08);
       border-radius: 14px; padding: 24px; margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.04), 0 6px 18px rgba(15,23,42,0.04);
     }
 
-    .card-highlight-blue { border-color: rgba(59,130,246,0.15); }
-    .card-highlight-orange { border-color: rgba(234,88,12,0.15); }
+    .card-highlight-blue { border-color: rgba(37,99,235,0.22); }
+    .card-highlight-orange { border-color: rgba(234,88,12,0.25); }
 
     .section-label {
       font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
@@ -91,19 +92,19 @@
 
     .chip {
       padding: 7px 14px; border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      color: #64748b; font-size: 13px; font-weight: 500;
+      border: 1px solid rgba(15,23,42,0.10);
+      background: #ffffff;
+      color: #475569; font-size: 13px; font-weight: 500;
       cursor: pointer; transition: all 0.2s ease; font-family: inherit;
     }
 
     .chip.selected {
-      border-color: rgba(59,130,246,0.4);
-      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
-      color: #e2e8f0;
+      border-color: rgba(37,99,235,0.4);
+      background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(37,99,235,0.05));
+      color: #1e3a8a;
     }
 
-    .chip:hover:not(.selected) { border-color: rgba(255,255,255,0.15); color: #94a3b8; }
+    .chip:hover:not(.selected) { border-color: rgba(15,23,42,0.20); color: #1e293b; background: #f8fafc; }
 
     /* Buttons */
     .btn-primary {
@@ -111,56 +112,61 @@
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
       font-family: inherit; letter-spacing: 0.5px; transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
     }
-    .btn-primary:hover { filter: brightness(1.1); }
-    .btn-primary:disabled { background: rgba(255,255,255,0.05); color: #475569; cursor: not-allowed; filter: none; }
+    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+    .btn-primary:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; filter: none; box-shadow: none; transform: none; }
 
     .btn-orange {
       width: 100%; padding: 14px 24px; border-radius: 10px; border: none;
       background: linear-gradient(135deg, #ea580c, #c2410c);
       color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
       font-family: inherit; letter-spacing: 0.5px; transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(234,88,12,0.25);
     }
-    .btn-orange:hover { filter: brightness(1.1); }
-    .btn-orange:disabled { opacity: 0.6; cursor: wait; filter: none; }
+    .btn-orange:hover { filter: brightness(1.05); transform: translateY(-1px); }
+    .btn-orange:disabled { opacity: 0.55; cursor: wait; filter: none; box-shadow: none; transform: none; }
 
     .btn-copy {
       padding: 6px 14px; border-radius: 6px;
-      border: 1px solid rgba(59,130,246,0.3);
-      background: rgba(59,130,246,0.1);
-      color: #60a5fa; font-size: 12px; font-weight: 600;
+      border: 1px solid rgba(37,99,235,0.30);
+      background: rgba(37,99,235,0.08);
+      color: #2563eb; font-size: 12px; font-weight: 600;
       cursor: pointer; font-family: inherit; transition: all 0.2s ease;
     }
-    .btn-copy.copied { background: rgba(34,197,94,0.15); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .btn-copy:hover { background: rgba(37,99,235,0.14); }
+    .btn-copy.copied { background: rgba(34,197,94,0.12); color: #16a34a; border-color: rgba(34,197,94,0.30); }
 
     /* Output Box */
     .output-box {
-      padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px;
+      padding: 16px; background: #f8fafc; border: 1px solid rgba(15,23,42,0.06); border-radius: 10px;
       line-height: 2; font-size: 14px; word-break: break-word;
     }
 
     .output-box-text {
-      padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px;
+      padding: 16px; background: #f8fafc; border: 1px solid rgba(15,23,42,0.06); border-radius: 10px;
       font-size: 13px; line-height: 1.7; white-space: pre-wrap;
       word-break: break-word; max-height: 400px; overflow-y: auto;
+      color: #1e293b;
     }
 
     .tip { font-size: 12px; color: #64748b; margin-top: 10px; line-height: 1.5; }
-    .tip strong { color: #94a3b8; }
+    .tip strong { color: #334155; }
 
     /* Textarea & Input */
     textarea, input[type="text"] {
       width: 100%; padding: 12px; border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.3); color: #e2e8f0;
+      border: 1px solid rgba(15,23,42,0.12);
+      background: #fbfaf8; color: #1e293b;
       font-size: 14px; font-family: inherit; resize: vertical;
     }
-    textarea:focus, input[type="text"]:focus { outline: none; border-color: rgba(59,130,246,0.3); }
+    textarea::placeholder, input[type="text"]::placeholder { color: #94a3b8; }
+    textarea:focus, input[type="text"]:focus { outline: none; border-color: rgba(37,99,235,0.4); background: #ffffff; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
 
     /* Mode Toggle */
     .mode-toggle {
       display: flex; gap: 6px; margin-bottom: 20px;
-      background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px;
+      background: #f1f5f9; border-radius: 10px; padding: 4px;
     }
     .mode-btn {
       flex: 1; padding: 10px 16px; border-radius: 8px; border: none;
@@ -168,23 +174,26 @@
       font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
       transition: all 0.2s ease;
     }
-    .mode-btn.active-prompt { background: rgba(59,130,246,0.15); color: #93c5fd; }
-    .mode-btn.active-ai { background: rgba(234,88,12,0.15); color: #fb923c; }
+    .mode-btn.active-prompt { background: rgba(37,99,235,0.12); color: #2563eb; }
+    .mode-btn.active-ai { background: rgba(234,88,12,0.12); color: #ea580c; }
 
     /* Calendar */
     .day-header {
       display: flex; justify-content: space-between; align-items: center;
       cursor: pointer; padding: 4px 0;
     }
-    .day-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #60a5fa; }
-    .day-theme { font-size: 16px; font-weight: 700; margin-top: 2px; }
+    .day-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2563eb; }
+    .day-theme { font-size: 16px; font-weight: 700; color: #0f172a; margin-top: 2px; }
     .day-meta { font-size: 12px; color: #64748b; margin-top: 4px; }
-    .day-arrow { font-size: 20px; color: #475569; transition: transform 0.2s ease; display: inline-block; }
+    .day-arrow { font-size: 20px; color: #94a3b8; transition: transform 0.2s ease; display: inline-block; }
     .day-arrow.open { transform: rotate(180deg); }
 
     .post-card {
-      padding: 14px; background: rgba(0,0,0,0.25); border-radius: 10px;
+      padding: 14px; background: #f8fafc; border-radius: 10px;
       margin-top: 12px; border-left: 3px solid #3b82f6;
+      border-top: 1px solid rgba(15,23,42,0.04);
+      border-right: 1px solid rgba(15,23,42,0.04);
+      border-bottom: 1px solid rgba(15,23,42,0.04);
     }
     .post-card.facebook { border-left-color: #1877F2; }
     .post-card.instagram { border-left-color: #E4405F; }
@@ -196,14 +205,14 @@
     .post-platform.tiktok { color: #69C9D0; }
 
     .post-time { font-size: 11px; color: #64748b; }
-    .post-type { font-size: 12px; font-weight: 600; color: #94a3b8; margin: 4px 0; }
-    .post-content { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+    .post-type { font-size: 12px; font-weight: 600; color: #334155; margin: 4px 0; }
+    .post-content { font-size: 13px; color: #475569; line-height: 1.6; }
 
     .flex-between { display: flex; justify-content: space-between; align-items: center; }
 
     .tab-content { animation: fadeUp 0.4s ease; }
 
-    .hashtag { color: #60a5fa; margin-right: 8px; }
+    .hashtag { color: #2563eb; margin-right: 8px; }
 
     .duration-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .duration-row .section-label { margin-bottom: 0; }
@@ -211,114 +220,149 @@
     .ai-section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .ai-section-header p { font-size: 13px; color: #64748b; margin: 4px 0 0; }
 
-    .error-msg { color: #f87171; font-size: 13px; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; margin-top: 12px; }
+    .error-msg { color: #b91c1c; font-size: 13px; padding: 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; margin-top: 12px; }
 
     .hidden { display: none; }
 
     /* Footer */
-    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: #334155; }
-    .footer a { color: #475569; text-decoration: none; }
+    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: #94a3b8; }
+    .footer a { color: #64748b; text-decoration: none; }
 
     /* Seasonal Banner */
     .seasonal-banner {
-      background: rgba(234,88,12,0.08); border: 1px solid rgba(234,88,12,0.2);
+      background: rgba(234,88,12,0.06); border: 1px solid rgba(234,88,12,0.22);
       border-left: 3px solid #ea580c; border-radius: 10px;
       padding: 12px 16px; margin-bottom: 20px; animation: fadeUp 0.6s ease 0.1s both;
     }
-    .seasonal-banner-title { font-size: 13px; font-weight: 700; color: #fb923c; margin-bottom: 4px; }
-    .seasonal-banner-text { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+    .seasonal-banner-title { font-size: 13px; font-weight: 700; color: #c2410c; margin-bottom: 4px; }
+    .seasonal-banner-text { font-size: 12px; color: #475569; line-height: 1.5; }
     .seasonal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
     .seasonal-tag {
       font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
       padding: 3px 8px; border-radius: 4px;
-      background: rgba(234,88,12,0.12); color: #fb923c; border: 1px solid rgba(234,88,12,0.2);
+      background: rgba(234,88,12,0.10); color: #c2410c; border: 1px solid rgba(234,88,12,0.22);
     }
 
     /* Post of the Day */
     .potd-card {
-      background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(234,88,12,0.04));
-      border: 1px solid rgba(59,130,246,0.15); border-left: 3px solid #3b82f6;
+      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(234,88,12,0.03));
+      border: 1px solid rgba(37,99,235,0.18); border-left: 3px solid #2563eb;
       border-radius: 14px; padding: 20px 24px; margin-bottom: 24px;
       animation: fadeUp 0.6s ease 0.15s both;
+      box-shadow: 0 4px 16px rgba(15,23,42,0.04);
     }
     .potd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .potd-label {
       font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
-      text-transform: uppercase; color: #60a5fa;
+      text-transform: uppercase; color: #2563eb;
     }
-    .potd-caption { font-size: 14px; color: #e2e8f0; line-height: 1.7; margin-bottom: 12px; white-space: pre-wrap; }
-    .potd-hashtags { font-size: 13px; color: #60a5fa; line-height: 2; margin-bottom: 12px; word-break: break-word; }
+    .potd-caption { font-size: 14px; color: #1e293b; line-height: 1.7; margin-bottom: 12px; white-space: pre-wrap; }
+    .potd-hashtags { font-size: 13px; color: #2563eb; line-height: 2; margin-bottom: 12px; word-break: break-word; }
     .potd-meta {
       display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
       font-size: 12px; color: #64748b; margin-bottom: 12px; padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(15,23,42,0.08);
     }
     .potd-meta-item { display: flex; align-items: center; gap: 4px; }
     .potd-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
     /* One-Click Post Tab Accent */
     .tab-btn.oneclick-tab {
-      border-color: rgba(234,88,12,0.3);
-      background: linear-gradient(135deg, rgba(234,88,12,0.1), rgba(234,88,12,0.03));
-      color: #fb923c;
+      border-color: rgba(234,88,12,0.30);
+      background: linear-gradient(135deg, rgba(234,88,12,0.08), rgba(234,88,12,0.02));
+      color: #ea580c;
     }
     .tab-btn.oneclick-tab.active {
-      border-color: rgba(234,88,12,0.5);
-      background: linear-gradient(135deg, rgba(234,88,12,0.2), rgba(234,88,12,0.08));
-      color: #fdba74;
+      border-color: rgba(234,88,12,0.50);
+      background: linear-gradient(135deg, rgba(234,88,12,0.18), rgba(234,88,12,0.06));
+      color: #c2410c;
     }
 
     /* One-Click Result Sections */
     .oneclick-result { margin-top: 16px; }
     .oneclick-section {
-      padding: 14px; background: rgba(0,0,0,0.25); border-radius: 10px;
-      margin-bottom: 10px; border-left: 3px solid #3b82f6;
+      padding: 14px; background: #f8fafc; border-radius: 10px;
+      margin-bottom: 10px; border-left: 3px solid #2563eb;
+      border-top: 1px solid rgba(15,23,42,0.04);
+      border-right: 1px solid rgba(15,23,42,0.04);
+      border-bottom: 1px solid rgba(15,23,42,0.04);
     }
-    .oneclick-section.hashtags-section { border-left-color: #60a5fa; }
-    .oneclick-section.timing-section { border-left-color: #4ade80; }
-    .oneclick-section.image-section { border-left-color: #c084fc; }
+    .oneclick-section.hashtags-section { border-left-color: #2563eb; background: #eff6ff; }
+    .oneclick-section.timing-section { border-left-color: #22c55e; background: #f0fdf4; }
+    .oneclick-section.image-section { border-left-color: #c084fc; background: #faf5ff; }
     .oneclick-section-label {
       font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: #64748b; margin-bottom: 6px;
+      text-transform: uppercase; color: #475569; margin-bottom: 6px;
     }
-    .oneclick-section-text { font-size: 13px; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; }
+    .oneclick-section-text { font-size: 13px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; }
     .copy-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 
     /* Image Suggestion */
     .image-suggestion {
       margin-top: 12px; padding: 14px; border-radius: 10px;
-      background: rgba(192,132,252,0.06); border: 1px solid rgba(192,132,252,0.15);
+      background: rgba(192,132,252,0.05); border: 1px solid rgba(192,132,252,0.20);
       border-left: 3px solid #c084fc;
     }
     .image-suggestion-label {
       font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: #c084fc; margin-bottom: 6px;
+      text-transform: uppercase; color: #9333ea; margin-bottom: 6px;
     }
-    .image-suggestion-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+    .image-suggestion-text { font-size: 13px; color: #475569; line-height: 1.6; }
+
+    /* Playbook (40-Day Reference Cards) */
+    .playbook-header {
+      font-size: 18px; font-weight: 800; color: #0f172a; margin: 24px 0 12px;
+      font-family: 'Playfair Display', serif;
+    }
+    .playbook-intro { font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.6; }
+    .playbook-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .playbook-grid { grid-template-columns: 1fr; } }
+    .playbook-card {
+      background: #ffffff; border: 1px solid rgba(15,23,42,0.08);
+      border-left: 3px solid #2563eb;
+      border-radius: 10px; padding: 16px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+    }
+    .playbook-card.orange { border-left-color: #ea580c; }
+    .playbook-card.green { border-left-color: #16a34a; }
+    .playbook-card.purple { border-left-color: #9333ea; }
+    .playbook-card h4 {
+      font-size: 13px; font-weight: 700; color: #0f172a;
+      margin-bottom: 10px; letter-spacing: 0.3px;
+    }
+    .playbook-card ul { list-style: none; padding: 0; margin: 0; }
+    .playbook-card li {
+      font-size: 13px; color: #475569; line-height: 1.6;
+      padding: 3px 0; position: relative; padding-left: 14px;
+    }
+    .playbook-card li::before {
+      content: "•"; color: #94a3b8; position: absolute; left: 0;
+    }
+    .playbook-card li strong { color: #0f172a; }
 
     /* Tour */
     .tour-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      position: fixed; inset: 0; background: rgba(15,23,42,0.40);
       z-index: 9998; transition: opacity 0.3s ease;
     }
     .tour-tooltip {
       position: fixed; z-index: 9999; max-width: 320px; width: calc(100vw - 32px);
-      background: rgba(17,24,39,0.95); border: 1px solid rgba(59,130,246,0.3);
+      background: #ffffff; border: 1px solid rgba(37,99,235,0.30);
       border-radius: 12px; padding: 16px 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 40px rgba(15,23,42,0.18);
       animation: fadeUp 0.3s ease;
     }
-    .tour-text { font-size: 14px; color: #e2e8f0; line-height: 1.6; margin-bottom: 14px; }
+    .tour-text { font-size: 14px; color: #1e293b; line-height: 1.6; margin-bottom: 14px; }
     .tour-footer { display: flex; justify-content: space-between; align-items: center; }
     .tour-dots { display: flex; gap: 6px; }
     .tour-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,0.15);
+      background: rgba(15,23,42,0.15);
     }
-    .tour-dot.active { background: #60a5fa; }
+    .tour-dot.active { background: #2563eb; }
     .tour-btns { display: flex; gap: 8px; }
     .tour-btn-skip {
-      padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(15,23,42,0.12);
       background: transparent; color: #64748b; font-size: 12px; font-weight: 600;
       cursor: pointer; font-family: inherit;
     }
@@ -330,7 +374,7 @@
     }
     .tour-highlight {
       position: relative; z-index: 9999;
-      box-shadow: 0 0 0 4px rgba(59,130,246,0.3), 0 0 20px rgba(59,130,246,0.15);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.30), 0 0 20px rgba(37,99,235,0.18);
       border-radius: 10px;
     }
 
@@ -435,13 +479,61 @@
       <div class="card">
         <div class="duration-row">
           <div class="section-label">Calendar Duration</div>
-          <div style="display:flex;gap:8px;margin-left:12px">
+          <div style="display:flex;gap:8px;margin-left:12px;flex-wrap:wrap">
             <button class="chip selected" id="dur-7" onclick="setDuration(7)">📅 7-Day Plan</button>
             <button class="chip" id="dur-14" onclick="setDuration(14)">📅 14-Day Plan</button>
+            <button class="chip" id="dur-40" onclick="setDuration(40)">🚀 40-Day Plan</button>
+          </div>
+        </div>
+        <p id="duration-note" style="font-size:12px;color:#64748b;margin-top:10px;line-height:1.5"></p>
+      </div>
+      <div id="calendar-days"></div>
+
+      <!-- 40-Day Playbook Reference (shows when 40-Day Plan is selected) -->
+      <div id="playbook-section" class="hidden">
+        <div class="playbook-header">📚 The Playbook — What's Working Right Now</div>
+        <p class="playbook-intro">Use these alongside your 40-Day Plan. The day-by-day calendar gives you the <em>what</em>; the playbook gives you the <em>how</em> — content formats that are converting in Clarksville right now, hooks that stop the scroll, and a fallback when you genuinely have nothing to post.</p>
+        <div class="playbook-grid">
+          <div class="playbook-card">
+            <h4>🎬 Best-Performing Content Types</h4>
+            <ul>
+              <li><strong>Reels:</strong> home walkthroughs, POV videos, "Come tour this home," before/after transformations</li>
+              <li><strong>Carousels:</strong> tips, buyer mistakes, neighborhood comparisons, "What X price gets you"</li>
+              <li><strong>Stories:</strong> polls, Q&amp;As, open house reminders, behind the scenes</li>
+            </ul>
+          </div>
+          <div class="playbook-card orange">
+            <h4>🎣 High-Engagement Hooks</h4>
+            <ul>
+              <li>"You're probably overpaying in rent…"</li>
+              <li>"Nobody tells buyers this…"</li>
+              <li>"Would you live here for this price?"</li>
+              <li>"This home is ONLY 35 minutes to Nashville 👀"</li>
+              <li>"$10k incentives available right now 💰"</li>
+              <li>"Wait until you see the primary bathroom…"</li>
+            </ul>
+          </div>
+          <div class="playbook-card green">
+            <h4>💡 Stuck With Nothing to Post?</h4>
+            <ul>
+              <li>Talk about <strong>the market</strong></li>
+              <li>Teach <strong>one thing</strong></li>
+              <li>Show <strong>one home feature</strong></li>
+              <li>Share <strong>one client story</strong></li>
+              <li>Show <strong>your lifestyle</strong> / behind the scenes</li>
+            </ul>
+          </div>
+          <div class="playbook-card purple">
+            <h4>✨ The North Star</h4>
+            <ul>
+              <li><strong>Consistency beats perfection</strong> in real estate content.</li>
+              <li>Post even when it's not polished.</li>
+              <li>Your voice is your differentiator.</li>
+              <li>Build trust, not just impressions.</li>
+            </ul>
           </div>
         </div>
       </div>
-      <div id="calendar-days"></div>
 
       <!-- AI Custom Calendar -->
       <div class="card card-highlight-orange" style="margin-top:8px">
@@ -566,6 +658,132 @@ const CALENDAR_14 = [...CALENDAR_7,
   {day:"Sunday (Wk 2)",theme:"Vision Board Sunday",posts:[
     {platform:"Instagram",time:"6:00 PM",type:"Inspiration",content:"Dream home content: luxury listings, aspirational lifestyle, or homeownership motivation.",format:"Carousel or Single Image"},
     {platform:"Facebook",time:"7:00 PM",type:"Weekly Preview",content:"Preview the upcoming week: new listings, events, or valuable content coming. Build anticipation.",format:"Text + Graphic"}
+  ]}
+];
+
+// ─── 40-DAY CONTENT IDEA BANK ───────────────────────────────────
+// Source: "40 Days of Real Estate Social Media Ideas for Clarksville Agents"
+// One post idea per day. Suggested platform/time/format inferred from content type.
+const CALENDAR_40 = [
+  {day:"Day 1",theme:"Can You Still Buy a Home With Little Money Down?",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"Educational Carousel",content:"Break down FHA, VA, USDA, and down payment assistance in simple terms — one slide per loan type.",format:"Carousel (5 slides)"}
+  ]},
+  {day:"Day 2",theme:"Best Areas in Clarksville for Nashville Commuters",posts:[
+    {platform:"Facebook",time:"2:00 PM",type:"Local Guide",content:"Talk about Exit 11, Sango, and quick access to I-24. Use a map graphic.",format:"Text + Map Graphic"}
+  ]},
+  {day:"Day 3",theme:"Before & After New Construction Tour",posts:[
+    {platform:"Instagram",time:"6:00 PM",type:"Transformation Reel",content:"Show raw land → framing → finished luxury home. Set to trending audio.",format:"Reel (30-60 sec)"}
+  ]},
+  {day:"Day 4",theme:"What $350k Gets You in Clarksville",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"Price-Point Carousel",content:"Compare homes, land, garages, and neighborhoods all at the $350k price point.",format:"Carousel (5-7 slides)"}
+  ]},
+  {day:"Day 5",theme:"Local Business Spotlight",posts:[
+    {platform:"Instagram",time:"10:00 AM",type:"Community Feature",content:"Feature a Clarksville coffee shop, taco spot, or local favorite. Tag them for cross-promotion.",format:"Reel or Photo + Story"}
+  ]},
+  {day:"Day 6",theme:"Renting vs Buying in 2026",posts:[
+    {platform:"Facebook",time:"1:00 PM",type:"Side-by-Side Comparison",content:"Show monthly payment comparisons with real Clarksville numbers.",format:"Infographic"}
+  ]},
+  {day:"Day 7",theme:"Open House Prep Tips",posts:[
+    {platform:"TikTok",time:"5:00 PM",type:"Buyer Tips",content:"Teach buyers how to prepare before touring homes.",format:"Video (30-60 sec)"}
+  ]},
+  {day:"Day 8",theme:"3 Things Buyers ALWAYS Forget",posts:[
+    {platform:"Instagram",time:"11:00 AM",type:"Educational Carousel",content:"Inspections, closing costs, and property taxes — one slide each.",format:"Carousel (3 slides)"}
+  ]},
+  {day:"Day 9",theme:"Luxury Home Feature Reel",posts:[
+    {platform:"Instagram",time:"7:00 PM",type:"Luxury Showcase",content:"Highlight ceilings, fireplaces, lighting, kitchens, and spa bathrooms.",format:"Reel (30-60 sec)"}
+  ]},
+  {day:"Day 10",theme:"Mistakes First-Time Buyers Make",posts:[
+    {platform:"TikTok",time:"6:00 PM",type:"Educational Reel",content:"Simple educational reel highlighting common first-time buyer mistakes.",format:"Video (30-60 sec)"}
+  ]},
+  {day:"Day 11",theme:"Neighborhood Lifestyle Video",posts:[
+    {platform:"Instagram",time:"4:00 PM",type:"Neighborhood Tour",content:"Feature parks, restaurants, shopping, gyms, schools — the daily-life view of the neighborhood.",format:"Reel (45-60 sec)"}
+  ]},
+  {day:"Day 12",theme:"What Is Earnest Money?",posts:[
+    {platform:"Facebook",time:"2:00 PM",type:"Quick Education",content:"Fast educational post defining earnest money in plain English.",format:"Text + Graphic"}
+  ]},
+  {day:"Day 13",theme:"Dream Kitchen Showcase",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"Luxury Feature",content:"ZLINE appliances, quartz countertops, gold fixtures, oversized islands.",format:"Reel or Carousel"}
+  ]},
+  {day:"Day 14",theme:"Can I Buy a Home While Self-Employed?",posts:[
+    {platform:"Facebook",time:"1:00 PM",type:"Educational Q&A",content:"Huge topic for Hispanic entrepreneurs and self-employed buyers. Break down bank statement loans and P&L loans.",format:"Long-form Post"}
+  ]},
+  {day:"Day 15",theme:"What Does Seller Concessions Mean?",posts:[
+    {platform:"Instagram",time:"11:00 AM",type:"Educational",content:"Explain how buyers can save thousands through seller concessions.",format:"Carousel (3-4 slides)"}
+  ]},
+  {day:"Day 16",theme:"Nashville Escape Content",posts:[
+    {platform:"TikTok",time:"7:00 PM",type:"Lifestyle Comparison",content:"\"Want more house for your money than Nashville?\" Show side-by-side comparisons.",format:"Video (30-45 sec)"}
+  ]},
+  {day:"Day 17",theme:"Behind-the-Scenes Realtor Day",posts:[
+    {platform:"Instagram",time:"5:00 PM",type:"Day in the Life",content:"Show calls, negotiations, inspections, coffee runs, the chaos.",format:"Story Series + Reel"}
+  ]},
+  {day:"Day 18",theme:"What Credit Score Do You Need?",posts:[
+    {platform:"Facebook",time:"10:00 AM",type:"Educational",content:"Simple chart post showing credit score ranges and loan options.",format:"Chart / Infographic"}
+  ]},
+  {day:"Day 19",theme:"New Construction Benefits",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"Buyer Education",content:"Warranties, energy efficiency, builder incentives, customization options.",format:"Carousel (4-5 slides)"}
+  ]},
+  {day:"Day 20",theme:"Top 5 Hidden Costs of Homeownership",posts:[
+    {platform:"Facebook",time:"3:00 PM",type:"Educational + Trustworthy",content:"Build trust by being honest about the real costs of owning a home.",format:"Text + Graphic"}
+  ]},
+  {day:"Day 21",theme:"Client Testimonial Story",posts:[
+    {platform:"Instagram",time:"11:00 AM",type:"Social Proof",content:"Focus on emotional transformation. Tell the story behind the closing.",format:"Reel or Photo + Caption"}
+  ]},
+  {day:"Day 22",theme:"Best Clarksville Areas for Families",posts:[
+    {platform:"Facebook",time:"2:00 PM",type:"Local Guide",content:"Schools, parks, quiet streets, larger lots — the family-first view.",format:"Text + Photos"}
+  ]},
+  {day:"Day 23",theme:"Can I Buy and Sell at the Same Time?",posts:[
+    {platform:"TikTok",time:"5:00 PM",type:"Educational Reel",content:"Walk through the logistics of buying and selling simultaneously.",format:"Video (45-60 sec)"}
+  ]},
+  {day:"Day 24",theme:"Walkthrough of a Bad Flip",posts:[
+    {platform:"Instagram",time:"6:00 PM",type:"Buyer Warning",content:"Teach buyers what to look out for in a poorly flipped home.",format:"Reel (60 sec)"}
+  ]},
+  {day:"Day 25",theme:"What Would You Upgrade First?",posts:[
+    {platform:"Instagram",time:"7:00 PM",type:"Engagement Post",content:"Interactive engagement post — get followers commenting on what they'd upgrade.",format:"Story Poll or Question"}
+  ]},
+  {day:"Day 26",theme:"Why Homes Near Exit 11 Move Fast",posts:[
+    {platform:"Facebook",time:"1:00 PM",type:"Local Market Insight",content:"Talk about convenience and retail growth around Exit 11.",format:"Text + Map / Photo"}
+  ]},
+  {day:"Day 27",theme:"Market Update",posts:[
+    {platform:"Instagram",time:"9:00 AM",type:"Market Snapshot",content:"Simple breakdown: average prices, inventory, interest rates, buyer demand.",format:"Carousel (4 slides)"}
+  ]},
+  {day:"Day 28",theme:"How Much House Can You Afford?",posts:[
+    {platform:"Facebook",time:"11:00 AM",type:"Affordability Calculator",content:"Use real examples — income, debt, down payment scenarios.",format:"Infographic + Caption"}
+  ]},
+  {day:"Day 29",theme:"Builder Incentives Explained",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"New Construction Tip",content:"Rate buy-downs, closing cost credits, included appliances, fences, blinds.",format:"Carousel (5 slides)"}
+  ]},
+  {day:"Day 30",theme:"POV: You Finally Stopped Renting",posts:[
+    {platform:"TikTok",time:"6:00 PM",type:"POV / Emotional Hook",content:"\"POV: You finally stopped renting.\" Use trending audio for the emotional moment.",format:"Video (15-30 sec)"}
+  ]},
+  {day:"Day 31",theme:"Luxury Features Buyers Want Right Now",posts:[
+    {platform:"Instagram",time:"5:00 PM",type:"Luxury Trend",content:"Tall ceilings, walk-in showers, covered patios, bonus rooms.",format:"Reel or Carousel"}
+  ]},
+  {day:"Day 32",theme:"Myth: You Need 20% Down",posts:[
+    {platform:"TikTok",time:"5:00 PM",type:"Myth Buster",content:"\"You do NOT need 20% down.\" Break down the real options.",format:"Video (30-45 sec)"}
+  ]},
+  {day:"Day 33",theme:"Funny Realtor Meme",posts:[
+    {platform:"Instagram",time:"7:00 PM",type:"Humor / Relatable",content:"Relatable content performs extremely well. Pick something every Realtor experiences.",format:"Meme or Reel"}
+  ]},
+  {day:"Day 34",theme:"Would You Rather?",posts:[
+    {platform:"Instagram",time:"6:00 PM",type:"Engagement Post",content:"Big yard vs luxury kitchen. Clarksville vs Nashville. New build vs older home.",format:"Story Polls (3-5 slides)"}
+  ]},
+  {day:"Day 35",theme:"Empty Lot to Finished Home Series",posts:[
+    {platform:"Instagram",time:"4:00 PM",type:"Construction Progress",content:"Construction progress content performs very well locally. Time-lapse if possible.",format:"Reel (30-45 sec)"}
+  ]},
+  {day:"Day 36",theme:"Why People Are Moving to Clarksville",posts:[
+    {platform:"Facebook",time:"2:00 PM",type:"Relocation Spotlight",content:"Affordability + growth + Nashville proximity. Use real numbers.",format:"Text + Photo"}
+  ]},
+  {day:"Day 37",theme:"Community Amenities Showcase",posts:[
+    {platform:"Instagram",time:"3:00 PM",type:"Neighborhood Feature",content:"Pools, gyms, dog parks, walking trails, restaurants.",format:"Reel or Carousel"}
+  ]},
+  {day:"Day 38",theme:"Homebuyer Q&A Box",posts:[
+    {platform:"Instagram",time:"7:00 PM",type:"Engagement Q&A",content:"\"Ask me ANYTHING about buying a home.\" Use the Story Q&A sticker.",format:"Story Q&A"}
+  ]},
+  {day:"Day 39",theme:"Things I Wish Buyers Knew Earlier",posts:[
+    {platform:"Facebook",time:"11:00 AM",type:"Authentic Storytelling",content:"Share lessons from the trenches. Honest, useful, no sales pitch.",format:"Long-form Text"}
+  ]},
+  {day:"Day 40",theme:"Homes Are Moving FAST 👀",posts:[
+    {platform:"Instagram",time:"12:00 PM",type:"Urgency / Listing Montage",content:"Urgency-based listing montage with a clear CTA. Short and snappy.",format:"Reel (15-30 sec)"}
   ]}
 ];
 
@@ -1215,16 +1433,30 @@ function copyPromptResult() {
 }
 
 // ─── CONTENT CALENDAR ───────────────────────────────────────────
+const DURATION_NOTES = {
+  7: "A week of posts, mapped to platform and time. Each day expands to show what to post and when.",
+  14: "Two weeks of posts with built-in variety — themes rotate so your feed doesn't repeat.",
+  40: "Forty days of content prompts from the 'Best-Performing Ideas for Clarksville Agents' playbook. One idea per day, suggested platform and format. Use it as a content bank — pick the days that fit your week."
+};
+
 function setDuration(d) {
   state.calDuration = d;
   state.calExpanded = null;
   document.getElementById('dur-7').classList.toggle('selected', d === 7);
   document.getElementById('dur-14').classList.toggle('selected', d === 14);
+  document.getElementById('dur-40').classList.toggle('selected', d === 40);
+  const note = document.getElementById('duration-note');
+  if (note) note.textContent = DURATION_NOTES[d] || '';
+  const playbook = document.getElementById('playbook-section');
+  if (playbook) playbook.classList.toggle('hidden', d !== 40);
   renderCalendar();
+  trackEvent('Calendar_DurationChanged', { duration: d });
 }
 
 function renderCalendar() {
-  const data = state.calDuration === 7 ? CALENDAR_7 : CALENDAR_14;
+  const data = state.calDuration === 7 ? CALENDAR_7
+             : state.calDuration === 14 ? CALENDAR_14
+             : CALENDAR_40;
   const container = document.getElementById('calendar-days');
   container.innerHTML = data.map((day, idx) => `
     <div class="card" style="cursor:pointer;${state.calExpanded === idx ? 'border-color:rgba(59,130,246,0.2)' : ''}">
@@ -1294,7 +1526,8 @@ initOneClick();
 initHashtags();
 initPrompts();
 updatePromptBtn();
-renderCalendar();
+// setDuration handles initial calendar render + duration note + playbook visibility
+setDuration(state.calDuration);
 initTour();
 </script>
 </body>

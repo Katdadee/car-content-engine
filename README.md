@@ -14,6 +14,7 @@ A simple, all-in-one tool for Clarksville Realtors to generate hashtags, build s
 | **Prompt Builder (AI Write It)** | AI writes the actual post content for you | **Yes** |
 | **7-Day Content Calendar** | Pre-built weekly posting plan with times and platforms | No |
 | **14-Day Content Calendar** | Extended two-week posting plan | No |
+| **40-Day Content Plan** | Forty days of Clarksville-specific post ideas + Playbook reference (best-performing formats, engagement hooks, fallback tips) | No |
 | **AI Custom Calendar** | AI generates a personalized calendar based on your niche | **Yes** |
 
 ---
