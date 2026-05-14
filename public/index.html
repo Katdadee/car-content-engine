@@ -8,6 +8,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
   <script defer data-domain="car-content-engine.netlify.app" src="https://plausible.io/js/script.js"></script>
+  <!-- SheetJS for reading Excel files attached in Specific Details -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -309,6 +311,53 @@
     }
     .image-suggestion-text { font-size: 13px; color: #475569; line-height: 1.6; }
 
+    /* File attach (Specific Details) */
+    .attach-row {
+      display: flex; gap: 12px; align-items: center;
+      margin: -8px 0 14px; flex-wrap: wrap;
+    }
+    .attach-input { display: none; }
+    .attach-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 8px;
+      border: 1px dashed rgba(37,99,235,0.40);
+      background: rgba(37,99,235,0.04);
+      color: #2563eb; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .attach-btn:hover {
+      background: rgba(37,99,235,0.10);
+      border-color: rgba(37,99,235,0.60);
+    }
+    .attach-hint {
+      font-size: 12px; color: #94a3b8; flex: 1; min-width: 180px; line-height: 1.4;
+    }
+    .attach-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+    .attach-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 6px 6px 12px;
+      background: #eff6ff;
+      border: 1px solid rgba(37,99,235,0.25);
+      border-radius: 18px;
+      font-size: 12px; color: #1e3a8a; font-weight: 600;
+    }
+    .attach-chip-remove {
+      background: rgba(37,99,235,0.15);
+      border: none; cursor: pointer;
+      width: 20px; height: 20px;
+      border-radius: 50%; color: #1d4ed8;
+      font-size: 13px; font-weight: 700; line-height: 1;
+      font-family: inherit;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .attach-chip-remove:hover { background: rgba(37,99,235,0.28); }
+    textarea.drag-over {
+      border-color: rgba(37,99,235,0.55) !important;
+      background: rgba(37,99,235,0.05) !important;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
+    }
+
     /* Playbook (40-Day Reference Cards) */
     .playbook-header {
       font-size: 18px; font-weight: 800; color: #0f172a; margin: 24px 0 12px;
@@ -425,7 +474,13 @@
         <div class="chip-group" id="oneclick-tones"></div>
 
         <div class="section-label">Specific Details (Optional)</div>
-        <textarea id="oneclick-details" rows="2" placeholder="Example: Just closed on a 4 bed/3 bath in Sango, $345k, VA buyer from Fort Campbell..." style="margin-bottom:20px"></textarea>
+        <textarea id="oneclick-details" rows="2" placeholder="Example: Just closed on a 4 bed/3 bath in Sango, $345k, VA buyer from Fort Campbell... — or drop a CSV / Excel / TXT file below."></textarea>
+        <div class="attach-row">
+          <label class="attach-btn" for="oneclick-file">📎 Attach a file (CSV, Excel, TXT)</label>
+          <input type="file" id="oneclick-file" class="attach-input" accept=".csv,.txt,.xlsx,.xls,text/csv,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="attachFile(this,'oneclick-details','oneclick-attach-chips')" />
+          <span class="attach-hint">Drop your Realtracs market export right here.</span>
+        </div>
+        <div class="attach-chips" id="oneclick-attach-chips"></div>
 
         <button class="btn-orange" id="oneclick-btn" onclick="generateOneClickPost()" disabled>🚀 Generate Complete Post</button>
       </div>
@@ -467,7 +522,13 @@
         <div class="chip-group" id="prompt-tones"></div>
 
         <div class="section-label">Specific Details (Optional)</div>
-        <textarea id="prompt-details" rows="3" placeholder="Example: 4 bed/3 bath in Sango area, $375k, great backyard, near Rossview schools..." style="margin-bottom:20px"></textarea>
+        <textarea id="prompt-details" rows="3" placeholder="Example: 4 bed/3 bath in Sango, $375k, near Rossview schools... — or drop a CSV / Excel / TXT file below (Realtracs market export, listing data, etc)."></textarea>
+        <div class="attach-row">
+          <label class="attach-btn" for="prompt-file">📎 Attach a file (CSV, Excel, TXT)</label>
+          <input type="file" id="prompt-file" class="attach-input" accept=".csv,.txt,.xlsx,.xls,text/csv,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="attachFile(this,'prompt-details','prompt-attach-chips')" />
+          <span class="attach-hint">Drop your Realtracs market export right here — no copy/paste needed.</span>
+        </div>
+        <div class="attach-chips" id="prompt-attach-chips"></div>
 
         <button class="btn-primary" id="prompt-generate-btn" onclick="handlePromptGenerate()" disabled>Generate Prompt</button>
       </div>
@@ -912,6 +973,108 @@ async function callAI(messages) {
 // ─── ANALYTICS ──────────────────────────────────────────────────
 function trackEvent(name, props) {
   if (window.plausible) window.plausible(name, { props });
+}
+
+// ─── FILE ATTACHMENTS (Specific Details) ────────────────────────
+// Lets users drop a CSV, Excel, or TXT file into Specific Details.
+// File text is extracted client-side and appended to the textarea,
+// so users see exactly what the prompt will receive.
+const MAX_ATTACH_CHARS = 80000; // ~80KB of text per file to keep prompts sane
+const attachState = {}; // { textareaId: [{ name, marker }] }
+
+async function attachFile(inputEl, textareaId, chipContainerId) {
+  const file = inputEl.files && inputEl.files[0];
+  if (!file) return;
+  try {
+    const text = await extractFileText(file);
+    if (!text || !text.trim()) {
+      alert('Could not read any text out of that file. Try a CSV, Excel, or plain-text file.');
+      inputEl.value = '';
+      return;
+    }
+    const trimmed = text.length > MAX_ATTACH_CHARS
+      ? text.slice(0, MAX_ATTACH_CHARS) + '\n\n[Truncated — file content was larger than the limit]'
+      : text;
+    const marker = `\n\n--- Attached file: ${file.name} ---\n${trimmed}\n--- End of ${file.name} ---\n`;
+    const textarea = document.getElementById(textareaId);
+    textarea.value = (textarea.value || '') + marker;
+    if (!attachState[textareaId]) attachState[textareaId] = [];
+    attachState[textareaId].push({ name: file.name, marker });
+    renderAttachChips(textareaId, chipContainerId);
+    inputEl.value = '';
+    trackEvent('File_Attached', { ext: (file.name.split('.').pop() || '').toLowerCase(), kb: Math.round(text.length / 1024) });
+  } catch (err) {
+    alert('File error: ' + err.message);
+    inputEl.value = '';
+  }
+}
+
+async function extractFileText(file) {
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  if (ext === 'csv' || ext === 'txt' || file.type.startsWith('text/')) {
+    return await file.text();
+  }
+  if (ext === 'xlsx' || ext === 'xls') {
+    if (typeof XLSX === 'undefined') {
+      throw new Error('Excel reader not available — please refresh the page and try again.');
+    }
+    const buf = await file.arrayBuffer();
+    const wb = XLSX.read(buf, { type: 'array' });
+    const parts = wb.SheetNames.map(name => {
+      const sheet = wb.Sheets[name];
+      const csv = XLSX.utils.sheet_to_csv(sheet);
+      return wb.SheetNames.length > 1 ? `[Sheet: ${name}]\n${csv}` : csv;
+    });
+    return parts.join('\n\n');
+  }
+  // Fallback: try reading as text
+  return await file.text();
+}
+
+function renderAttachChips(textareaId, chipContainerId) {
+  const container = document.getElementById(chipContainerId);
+  if (!container) return;
+  const items = attachState[textareaId] || [];
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  container.innerHTML = items.map((item, idx) => `
+    <span class="attach-chip">
+      📎 ${esc(item.name)}
+      <button class="attach-chip-remove" onclick="removeAttachment('${textareaId}','${chipContainerId}',${idx})" aria-label="Remove ${esc(item.name)}">×</button>
+    </span>
+  `).join('');
+}
+
+function removeAttachment(textareaId, chipContainerId, idx) {
+  const items = attachState[textareaId] || [];
+  const item = items[idx];
+  if (!item) return;
+  const textarea = document.getElementById(textareaId);
+  if (textarea) textarea.value = textarea.value.split(item.marker).join('');
+  items.splice(idx, 1);
+  renderAttachChips(textareaId, chipContainerId);
+}
+
+function initFileDrop(textareaId, fileInputId, chipContainerId) {
+  const textarea = document.getElementById(textareaId);
+  if (!textarea) return;
+  ['dragenter','dragover'].forEach(evt => textarea.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); textarea.classList.add('drag-over'); }));
+  ['dragleave','dragend'].forEach(evt => textarea.addEventListener(evt, () => textarea.classList.remove('drag-over')));
+  textarea.addEventListener('drop', async (e) => {
+    e.preventDefault(); e.stopPropagation();
+    textarea.classList.remove('drag-over');
+    const fileInput = document.getElementById(fileInputId);
+    if (!fileInput || !e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+    for (const file of e.dataTransfer.files) {
+      try {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+      } catch (_) {
+        // Some browsers don't allow setting files; fall back to direct call
+      }
+      await attachFile(fileInput, textareaId, chipContainerId);
+    }
+  });
 }
 
 // ─── SEASONAL BANNER ────────────────────────────────────────────
@@ -1528,6 +1691,9 @@ initPrompts();
 updatePromptBtn();
 // setDuration handles initial calendar render + duration note + playbook visibility
 setDuration(state.calDuration);
+// Wire drag-and-drop file attachment on both Specific Details textareas
+initFileDrop('oneclick-details','oneclick-file','oneclick-attach-chips');
+initFileDrop('prompt-details','prompt-file','prompt-attach-chips');
 initTour();
 </script>
 </body>
